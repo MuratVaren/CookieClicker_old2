@@ -21,6 +21,7 @@ namespace CookieClicker
     /// </summary>
     public partial class MainWindow : Window
     {
+        private decimal cookieCounter = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -40,14 +41,36 @@ namespace CookieClicker
                     FillBehavior = FillBehavior.Stop,
                 };
                 clickAnimation.Completed += ClickAnimation_Completed;
-                ImgCookie.BeginAnimation(Image.MarginProperty, clickAnimation);            
+
+                cookieCounter++;
+                ImgCookie.BeginAnimation(Image.MarginProperty, clickAnimation);
+                UpdateCookieDisplay();
+                ButtonEnabler();
             }
         }
-
         private void ClickAnimation_Completed(object sender, EventArgs e)
         {
             BitmapImage bitmapImage = new BitmapImage(new Uri("Assets/Images/Cookie.png", UriKind.RelativeOrAbsolute));
             ImgCookie.Source = bitmapImage;
+        }
+        public void UpdateCookieDisplay()
+        {
+            LblCookieCounter.Content = $"{cookieCounter} Cookies";
+            this.Title = $"{cookieCounter} Cookies";
+        }
+
+        public void ButtonEnabler()
+        {
+            BtnPointer.IsEnabled = cookieCounter >= 15;
+            BtnGranny.IsEnabled = cookieCounter >= 100;
+            BtnFarm.IsEnabled = cookieCounter >= 1100;
+            BtnMine.IsEnabled = cookieCounter >= 12000;
+            
+        }
+
+        private void BtnBuy_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
